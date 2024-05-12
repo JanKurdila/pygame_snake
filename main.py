@@ -54,6 +54,7 @@ if __name__ == "__main__":
     had = [[config.ROZLISENIE[0]//2, config.ROZLISENIE[1]//2]]
     smer = "DOWN" # Definujeme defaultný smer
     jablko = generate_apple(config.ROZLISENIE, config.VELKOST_JABLKA)
+    pocitadlo_zjedenych_jablk = 0  # Zavednie počítadla pre zjedené jablka
 
     while True:
         # Ak vypnem okno, musím vypnuť pygame
@@ -71,6 +72,7 @@ if __name__ == "__main__":
         had.insert(0, new_position)
 
         if is_colision(had[0], jablko):
+            pocitadlo_zjedenych_jablk += 1
             print('NASTALA KOLIZIA')
             jablko = generate_apple(config.ROZLISENIE, config.VELKOST_HADA)
         else:
@@ -95,6 +97,11 @@ if __name__ == "__main__":
 
         # Vykreslenie jablka
         pygame.draw.rect(window, config.FARBA_JABLKA, pygame.Rect(jablko[0], jablko[1], config.VELKOST_JABLKA, config.VELKOST_JABLKA))
+
+         # Vypis pocitadla
+        font = pygame.font.Font(None, 36)
+        pocitadlo_text = font.render("Počet zjedených jabĺk: " + str(pocitadlo_zjedenych_jablk), True, (255, 255, 255))
+        window.blit(pocitadlo_text, (10, 10))
 
         pygame.display.update()
 
