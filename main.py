@@ -46,6 +46,13 @@ def is_colision(snake_head, apple):
         return True
     return False
 
+def is_self_collision(snake):
+    head = snake[0]
+    for part in snake[1:]:
+        if head == part:
+            return True
+    return False
+
 if __name__ == "__main__":
     pygame.init()
     clock = pygame.time.Clock() # Objekt
@@ -79,7 +86,7 @@ if __name__ == "__main__":
             had.pop()
 
         # Kontrola či hlava hadika je von, dáme index 0, lebo hlava je na nulke pozicii v poli
-        if is_out(had[0], config.ROZLISENIE):
+        if is_out(had[0], config.ROZLISENIE) or is_self_collision(had):
             end_game(window)
 
         # Vykreslenie hlavičky hadika
