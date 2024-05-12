@@ -41,6 +41,11 @@ def generate_apple(game_res, snake_size):
     y = random.choice(range(0, game_res[1]-snake_size + 1, snake_size))
     return [x, y]
 
+def is_colision(snake_head, apple):
+    if snake_head[0] == apple[0] and snake_head[1] == apple[1]:
+        return True
+    return False
+
 if __name__ == "__main__":
     pygame.init()
     clock = pygame.time.Clock() # Objekt
@@ -60,6 +65,10 @@ if __name__ == "__main__":
         keys = pygame.key.get_pressed() # Vrati slovnik, kde je klávesy , či sú stlačné alebo nie, (True, False)
         smer = update_direction(smer, keys)
         had = update_position(had, smer, config.VELKOST_HADA) # Mení sa pohyb hlavičky hada v závislosti, ako je nastavený defaultný smer
+
+        if is_colision(had, jablko):
+            print('NASTALA KOLIZIA')
+            jablko = generate_apple(config.ROZLISENIE, config.VELKOST_HADA)
 
         # Kontrola či hlava hadika je von
         if is_out(had, config.ROZLISENIE):
