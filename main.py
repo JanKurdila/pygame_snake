@@ -50,8 +50,8 @@ if __name__ == "__main__":
     pygame.init()
     clock = pygame.time.Clock() # Objekt
     window = pygame.display.set_mode(config.ROZLISENIE)
-    # Suradnica hlavy hadika 
-    had = [config.ROZLISENIE[0]//2, config.ROZLISENIE[1]//2]
+    # Suradnica hlavy hadika - teraz urobim telo hada, obalim ho do pola
+    had = [[config.ROZLISENIE[0]//2, config.ROZLISENIE[1]//2]]
     smer = "DOWN" # Definujeme defaultný smer
     jablko = generate_apple(config.ROZLISENIE, config.VELKOST_HADA)
 
@@ -64,18 +64,28 @@ if __name__ == "__main__":
         
         keys = pygame.key.get_pressed() # Vrati slovnik, kde je klávesy , či sú stlačné alebo nie, (True, False)
         smer = update_direction(smer, keys)
-        had = update_position(had, smer, config.VELKOST_HADA) # Mení sa pohyb hlavičky hada v závislosti, ako je nastavený defaultný smer
+        # Tu nastane zmena, lebo už bude telo hada, teda nebude had ale new_position
+        # had = update_position(had, smer, config.VELKOST_HADA) # Mení sa pohyb hlavičky hada v závislosti, ako je nastavený defaultný smer
 
-        if is_colision(had, jablko):
+        new_position = update_position(had[0], smer, config.VELKOST_HADA)
+        had.insert(0, new_position)
+
+        if is_colision(had[0], jablko):
             print('NASTALA KOLIZIA')
             jablko = generate_apple(config.ROZLISENIE, config.VELKOST_HADA)
+        else:
+            had.pop()
 
-        # Kontrola či hlava hadika je von
-        if is_out(had, config.ROZLISENIE):
+        # Kontrola či hlava hadika je von, dáme index 0, lebo hlava je na nulke pozicii v poli
+        if is_out(had[0], config.ROZLISENIE):
             end_game(window)
 
         # Vykreslenie hlavičky hadika
-        pygame.draw.rect(window, config.FARBA_HLAVY_HADA, pygame.Rect(had[0], had[1], config.VELKOST_HADA, config.VELKOST_HADA))
+        # pygame.draw.rect(window, config.FARBA_HLAVY_HADA, pygame.Rect(had[0], had[1], config.VELKOST_HADA, config.VELKOST_HADA))
+
+        # To bude inak, lebo to už bude had s telom, teda list listov
+        for part in had:
+           pygame.draw.rect(window, config.FARBA_HLAVY_HADA, pygame.Rect(part[0], part[1], config.VELKOST_HADA, config.VELKOST_HADA))
 
         # Vykreslenie jablka
         pygame.draw.rect(window, config.FARBA_JABLKA, pygame.Rect(jablko[0], jablko[1], config.VELKOST_HADA, config.VELKOST_HADA))
