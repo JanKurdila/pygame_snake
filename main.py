@@ -24,6 +24,17 @@ def update_direction(direction, keys):
         return 'DOWN' if direction != 'UP' else direction
     return direction
 
+def is_out(snake, game_res):
+    if snake[0] < 0 or snake[1] < 0 or  snake[0] > game_res[0] or snake[1] > game_res[1]:
+        return True
+    return False
+
+def end_game(window):
+    print('GAME OVER')
+    window.fill(config.FARBA_POZADIA)
+    pygame.quit()
+    sys.exit()
+
 if __name__ == "__main__":
     pygame.init()
     clock = pygame.time.Clock() # Objekt
@@ -42,6 +53,10 @@ if __name__ == "__main__":
         keys = pygame.key.get_pressed() # Vrati slovnik, kde je klávesy , či sú stlačné alebo nie, (True, False)
         smer = update_direction(smer, keys)
         had = update_position(had, smer, config.VELKOST_HADA) # Mení sa pohyb hlavičky hada v závislosti, ako je nastavený defaultný smer
+
+        # Kontrola či hlava hadika je von
+        if is_out(had, config.ROZLISENIE):
+            end_game(window)
 
         # Vykreslenie hlavičky hadika
         pygame.draw.rect(window, config.FARBA_HLAVY_HADA, pygame.Rect(had[0], had[1], config.VELKOST_HADA, config.VELKOST_HADA))
