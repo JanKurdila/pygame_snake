@@ -53,7 +53,7 @@ if __name__ == "__main__":
     # Suradnica hlavy hadika - teraz urobim telo hada, obalim ho do pola
     had = [[config.ROZLISENIE[0]//2, config.ROZLISENIE[1]//2]]
     smer = "DOWN" # Definujeme defaultný smer
-    jablko = generate_apple(config.ROZLISENIE, config.VELKOST_HADA)
+    jablko = generate_apple(config.ROZLISENIE, config.VELKOST_JABLKA)
 
     while True:
         # Ak vypnem okno, musím vypnuť pygame
@@ -83,12 +83,18 @@ if __name__ == "__main__":
         # Vykreslenie hlavičky hadika
         # pygame.draw.rect(window, config.FARBA_HLAVY_HADA, pygame.Rect(had[0], had[1], config.VELKOST_HADA, config.VELKOST_HADA))
 
-        # To bude inak, lebo to už bude had s telom, teda list listov
-        for part in had:
-           pygame.draw.rect(window, config.FARBA_HLAVY_HADA, pygame.Rect(part[0], part[1], config.VELKOST_HADA, config.VELKOST_HADA))
+        # To bude inak, lebo to už bude had s telom, teda list listov a navyše chceme inú farbu pre hlavu a telo hada
+        #for part in had:
+           #pygame.draw.rect(window, config.FARBA_HLAVY_HADA, pygame.Rect(part[0], part[1], config.VELKOST_HADA, config.VELKOST_HADA))
+
+        for i, part in enumerate(had):
+            if i == 0:
+                pygame.draw.rect(window, config.FARBA_HLAVY_HADA, pygame.Rect(part[0], part[1], config.VELKOST_HADA, config.VELKOST_HADA))
+            else:
+                 pygame.draw.rect(window, config.FARBA_TELO_HADA, pygame.Rect(part[0], part[1], config.VELKOST_HADA, config.VELKOST_HADA))
 
         # Vykreslenie jablka
-        pygame.draw.rect(window, config.FARBA_JABLKA, pygame.Rect(jablko[0], jablko[1], config.VELKOST_HADA, config.VELKOST_HADA))
+        pygame.draw.rect(window, config.FARBA_JABLKA, pygame.Rect(jablko[0], jablko[1], config.VELKOST_JABLKA, config.VELKOST_JABLKA))
 
         pygame.display.update()
 
